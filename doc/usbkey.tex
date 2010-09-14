@@ -1,0 +1,99 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[MeX]{polski}
+\usepackage[cp1250]{inputenc}
+\usepackage[colorlinks,linkcolor=black,urlcolor=black]{hyperref}
+
+\author{Bartosz Pieñkowski}
+\title{Logowanie kluczem USB}
+\hypersetup{unicode,pdfauthor={Bartosz Pieñkowski},pdftitle={Logowanie kluczem USB}}
+
+\begin{document}
+\maketitle
+
+\section{Za³o¿enia projektu}
+Celem projektu jest umo¿liwienie autentykacji u¿ytkowników systemu BSD na podstawie kluczy USB posiadaj¹cych unikalny numer seryjny. 
+
+Obecnoœæ urz¹dzenia o~numerze seryjnym przyporz¹dkowanym do danego u¿ytkownika eliminuje koniecznoœæ podawania przez niego has³a w~procesie uwierzytelniania.
+
+Opcjonalnie weryfikacja mo¿e dotyczyæ zarówno obecnoœci klucza USB o~¿¹danym numerze seryjnym, jak i~poprawnoœci has³a autoryzowanego u¿ytkownika, co wp³ynie na poprawê bezpieczeñstwa systemu.
+
+
+
+\section{Mechanizm PAM}
+\subsection{Zasada dzia³ania}
+Idealnym rozwi¹zaniem kwestii uwierzytelniania jest wykorzystanie mechanizmu PAM\footnote{Pluggable Authentication Modules}, bêd¹cego poœrednikiem pomiêdzy aplikacjami wymagaj¹cymi autoryzacji a~ró¿nymi metodami autentykacji, udostêpnianymi poprzez modu³y.
+
+Modularna architektura mechanizmu gwarantuje elastycznoœæ w~doborze metod uwierzytelniania dla ka¿dej aplikacji z~osobna, dokonywanym poprzez modyfikacjê plików konfiguracyjnych zlokalizowanych w katalogu \verb|/etc/pam.d/|.
+
+Wymienione zalety czyni¹ PAM uniwersalnym mechanizmem autentykacji, szeroko implementowanym na platformach uniksowych.
+
+
+\subsection{Modu³ \protect\texttt{pam\_usbkey.so}}
+Realizacj¹ za³o¿eñ projektu jest dostarczenie modu³u PAM implementuj¹cego uwierzytelnianie na podstawie numerów seryjnych pod³aczonych urz¹dzeñ USB. Za³o¿enia te spe³nia modu³ \verb|pam_usbkey.so|.
+
+W momencie zainicjowania procesu uwierzytelniania modu³ ten odczytuje numer seryjny przyporz¹dkowany do ¿¹daj¹cego autoryzacji u¿ytkownika z~pliku konfiguracyjnego \verb|usbkey.conf|.
+
+Kolejnym krokiem jest uzyskanie listy obecnych w~systemie urz¹dzeñ USB i~porównanie przypisanych im numerów seryjnych z~wartoœci¹ odczytan¹ z~pliku konfiguracyjnego. Uwierzytelnienie koñczy siê sukcesem w~przypadku natrafienia na szukany numer seryjny, w~przeciwnym razie rezultatem jest odmowa dostêpu.
+
+
+\subsection{Konfiguracja}
+Ka¿dy program umo¿liwiaj¹cy autoryzacjê u¿ytkowników posiada oddzielny plik konfiguracyjny w katalogu \verb|/etc/pam.d/|, definiuj¹cy dobór modu³ów oraz wp³yw wyniku ich dzia³ania na koñcowy rezultat procesu autentykacji.
+
+Wymuszenie u¿ycia modu³u \verb|pam_usbkey.so| jako wystarczaj¹cego do pomyœlnego zakoñczenia procesu uwierzytelniania wymaga modyfikacji pliku \verb|login| poprzez dodanie na szczycie stosu modu³ów linii:
+\begin{quote}
+	\verb|auth      sufficient      pam_usbkey.so|
+\end{quote}
+
+Inn¹ mo¿liwoœci¹ jest wykorzystanie modu³u \verb|pam_usbkey.so| razem ze standardow¹ metod¹ uwierzytelniania has³em, zaimplementowan¹ w postaci modu³u \verb|pam_unix.so|. W tym wypadku autentykacja koñczy siê sukcesem jedynie w~sytuacji, gdy obydwa modu³y zakoñcz¹ dzia³anie z~pozytywnym rezultatem. 
+
+Narzuca to koniecznoœæ uzupe³nienia pliku \verb|login| o~nastêpuj¹ce linie:
+\begin{quote}
+	\begin{verbatim}
+	auth      required        pam_usbkey.so
+	auth      required        pam_unix.so
+	\end{verbatim}
+\end{quote}
+
+
+
+\section{Instalacja modu³u}
+Kompilacja kodu Ÿród³owego oraz instalacja modu³u w systemie odbywa siê przy u¿yciu skryptu \emph{Makefile}, poprzez wydanie kolejno poleceñ:
+\begin{verbatim}
+make
+make install
+\end{verbatim}
+
+Za przywrócenie zawartoœci katalogu do stanu sprzed kompilacji odpowiada polecenie:
+\begin{verbatim}
+make clean
+\end{verbatim}
+
+
+
+\section{Plik konfiguracyjny \protect\texttt{usbkey.conf}}
+Plik konfiguracyjny modu³u \verb|pam_usbkey.so| przechowywany jest w katalogu \linebreak \verb|/etc/security/| pod nazw¹ \verb|usbkey.conf|. Stanowi on przyporzadkowanie numerów seryjnych urz¹dzeñ USB u¿ytkownikom systemu.
+
+Ka¿da linia pliku sk³ada siê z pary \verb|nazwa_u¿ytkownika:numer_seryjny|. Przyk³adowy plik \verb|usbkey.conf| wygl¹da zatem nastêpuj¹co:
+\begin{quote}
+	\begin{verbatim}
+	pienkowb:F0CADC673DF2C8ED
+	kowalskj:066B0969C9ACEBE9
+	wysockip:2DE087A50A1B42D7
+	\end{verbatim}
+\end{quote}
+
+Istotn¹ kwesti¹ bezpieczeñstwa jest nadanie plikowi ograniczonych praw dostêpu w celu zapobie¿enia jego modyfikacji przez osoby nieuprawnione. Aktualizacja pliku le¿y w gestii administratora systemu.
+
+
+
+\begin{thebibliography}{}
+	\bibitem{howto} \href{http://www.faqs.org/docs/Linux-HOWTO/User-Authentication-HOWTO.html\#AEN101}
+		{P. Hernberg: \emph{User Authentication HOWTO}}
+	\bibitem{guide} \href{http://www.centos.org/docs/5/html/Deployment\_Guide-en-US/ch-pam.html}
+		{\emph{Red Hat Enterprise Linux Deployment Guide}}
+	\bibitem{article} \href{http://www.packtpub.com/article/development-with-pluggable-authentication-modules-pam}
+		{K. Geisshirt: \emph{Development with Pluggable Authentication Modules}}
+\end{thebibliography}
+
+\end{document}
