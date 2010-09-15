@@ -1,8 +1,9 @@
 #include "serial.h"
 
+#include <libusb.h>
+
 #include <stdio.h>
 #include <string.h>
-#include <libusb.h>
 
 #define LINE_SIZE 1024
 
@@ -20,7 +21,7 @@ int get_serial(const char* user, char* buffer, unsigned int size) {
 			char* result = strtok(line, ":");
 
 			if(result && !strcmp(result, user)) {
-				if(result = strtok(NULL, "\0")) {
+				if(result = strtok(NULL, "\n")) {
 					strncpy(buffer, result, size);
 					return 0;
 				}
@@ -42,12 +43,12 @@ int check_serial(const char* serial) {
 		struct libusb_device_descriptor desc;
 		libusb_device_handle* dev;
 
-		libusb_get_device_descriptor(list[i], &desc);
+		if(libusb_get_device_descriptor(list[i], &desc)) break;
 		if(libusb_open(list[i], &dev)) break;
 
 		char buffer[256] = {0};
-		libusb_get_string_descriptor_ascii(dev, 
-			desc.iSerialNumber, buffer, 255);
+		libusb_get_string_descriptor_ascii(dev, desc.iSerialNumber,
+				buffer, 255);
 
 		if(strcmp(serial, buffer) == 0)
 			match = 1;
