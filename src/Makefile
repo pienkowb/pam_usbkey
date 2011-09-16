@@ -10,8 +10,8 @@ pam_usbkey.so: $(OBJECTS)
 	ld -x --shared $(LDFLAGS) $(OBJECTS) -o $@
 
 install:
-	install pam_usbkey.so /usr/lib/
-	install usbserial /usr/sbin/
+	install pam_usbkey.so /usr/local/lib/
+	install usbserial /usr/local/sbin/
 
 clean:
 	rm -f *.o $(OUTPUT)
