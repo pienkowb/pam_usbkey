@@ -6,7 +6,7 @@
 int main(int argc, char* argv[]) {
 	unsigned char bus, device;
 
-	if(argc < 3 || sscanf(argv[1], "%hhu", &bus) != 1 
+	if(argc < 3 || sscanf(argv[1], "%hhu", &bus) != 1
 			|| sscanf(argv[2], "%hhu", &device) != 1)
 	{
 		puts("usage: usbserial bus device");
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 		if(libusb_open(list[i], &dev)) break;
 
 		char buffer[256] = {0};
-		libusb_get_string_descriptor_ascii(dev, desc.iSerialNumber, 
+		libusb_get_string_descriptor_ascii(dev, desc.iSerialNumber,
 				buffer, 255);
 		puts(buffer);
 

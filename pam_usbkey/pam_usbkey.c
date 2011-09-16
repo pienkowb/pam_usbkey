@@ -15,7 +15,7 @@ pam_sm_authenticate(pam_handle_t* pamh, int flags, int argc, const char** argv)
 		return result;
 
 	char serial[256] = {0};
-	
+
 	if(get_serial(user, serial, 255) == 0)
 		if(check_serial(serial))
 			return PAM_SUCCESS;

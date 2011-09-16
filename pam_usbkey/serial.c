@@ -17,7 +17,7 @@ int get_serial(const char* user, char* buffer, unsigned int size) {
 			fgets(line, LINE_SIZE, config);
 			if(strchr(line, '\n'))
 				*strchr(line, '\n') = 0;
-			
+
 			char* result = strtok(line, ":");
 
 			if(result && !strcmp(result, user)) {
