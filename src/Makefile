@@ -1,4 +1,3 @@
-CC=gcc
 CFLAGS=-fPIC
 LDFLAGS=-lusb
 
@@ -11,7 +10,7 @@ pam_usbkey.so: $(OBJECTS)
 	ld -x --shared $(LDFLAGS) $(OBJECTS) -o $@
 
 install:
-	cp pam_usbkey.so /lib/security/
+	install pam_usbkey.so /usr/lib/
 
 clean:
 	rm -f *.o $(OUTPUT)
