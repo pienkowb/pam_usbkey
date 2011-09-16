@@ -11,6 +11,7 @@ pam_usbkey.so: $(OBJECTS)
 
 install:
 	install pam_usbkey.so /usr/lib/
+	install usbserial /usr/sbin/
 
 clean:
 	rm -f *.o $(OUTPUT)
