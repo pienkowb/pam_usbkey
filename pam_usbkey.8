@@ -14,7 +14,7 @@ Wymuszenie użycia modułu
 .Nm
 jako wystarczającego do pomyślnego zakończenia procesu logowania wymaga
 modyfikacji pliku
-.Em /etc/pam.d/login
+.Pa /etc/pam.d/login
 poprzez dodanie na szczycie stosu modułów linii:
 .Pp
 .Dl "auth      sufficient      pam_usbkey.so"
@@ -31,22 +31,28 @@ modułu
 W tym wypadku proces logowania kończy się sukcesem jedynie w sytuacji, gdy
 obydwa moduły zakończą działanie z pozytywnym rezultatem. Narzuca to
 konieczność uzupełnienia pliku
-.Em /etc/pam.d/login
+.Pa /etc/pam.d/login
 o linie:
 .Pp
 .Dl "auth      required        pam_usbkey.so"
 .Dl "auth      required        pam_unix.so"
 .Sh NOTES
 Plik konfiguracyjny modułu przechowywany jest w katalogu
-.Em /etc/security/
+.Pa /etc/security/
 pod nazwą
 .Sy usbkey.conf.
 Stanowi on przyporządkowanie numerów seryjnych urządzeń USB użytkownikom
-systemu. Każda linia pliku składa się zatem z pary
-.Sy nazwa_użytkownika:numer_seryjny.
-.Sh AUTHOR
+systemu. Każda linia pliku składa się z pary
+.Li nazwa_użytkownika:numer_seryjny .
+.Sh AUTHORS
 .An Bartosz Pieńkowski Aq pienkowb@iem.pw.edu.pl
 .Sh FILES
+.Bl -item -compact
+.It
+.Pa /etc/security/usbkey.conf
+.It
+.Pa /etc/pam.d/login
+.El
 .Sh SEE ALSO
 .Xr usbserial 1 ,
 .Xr pam 3 ,
