@@ -1,0 +1,46 @@
+.Dd October 11, 2011
+.Dt PAM_USBKEY 8
+.Os
+.Sh NAME
+.Nm pam_usbkey
+.Nd uwierzytelnianie na podstawie obecności kluczy USB
+.Sh DESCRIPTION
+Zadaniem modułu
+.Nm pam_usbkey
+jest umożliwienie uwierzytelniania na podstawie obecności w systemie kluczy USB
+o unikalnym numerze seryjnym.
+.Sh EXAMPLES
+Wymuszenie użycia modułu
+.Nm pam_usbkey
+jako wystarczającego do pomyślnego zakończenia procesu logowania wymaga
+modyfikacji pliku
+.Em /etc/pam.d/login
+poprzez dodanie na szczycie stosu modułów linii:
+.Pp
+.Dl "auth      sufficient      pam_usbkey.so"
+.Pp
+Po dokonaniu powyższej zmiany obecność urządzenia o numerze seryjnym
+przyporządkowanym do danego użytkownika eliminuje konieczność podawania
+przez niego hasła w procesie logowania.
+.Pp
+Inną możliwością jest wykorzystanie modułu
+.Nm pam_usbkey
+razem ze standardową metodą uwierzytelniania hasłem, zaimplementowaną w postaci
+modułu
+.Nm pam_unix\&.
+W tym wypadku proces logowania kończy się sukcesem jedynie w sytuacji, gdy
+obydwa moduły zakończą działanie z pozytywnym rezultatem. Narzuca to
+konieczność uzupełnienia pliku
+.Em /etc/pam.d/login
+o linie:
+.Pp
+.D1 "auth      required        pam_usbkey.so"
+.D1 "auth      required        pam_unix.so"
+.Sh NOTES
+.Sh AUTHOR
+.An Bartosz Pieńkowski Aq pienkowb@iem.pw.edu.pl
+.Sh FILES
+.Sh SEE ALSO
+.Xr usbserial 1 ,
+.Xr pam 3 ,
+.Xr pam_unix 8
