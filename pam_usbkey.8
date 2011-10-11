@@ -11,7 +11,7 @@ jest umożliwienie uwierzytelniania na podstawie obecności w systemie kluczy US
 o unikalnym numerze seryjnym.
 .Sh EXAMPLES
 Wymuszenie użycia modułu
-.Nm pam_usbkey
+.Nm
 jako wystarczającego do pomyślnego zakończenia procesu logowania wymaga
 modyfikacji pliku
 .Em /etc/pam.d/login
@@ -24,19 +24,26 @@ przyporządkowanym do danego użytkownika eliminuje konieczność podawania
 przez niego hasła w procesie logowania.
 .Pp
 Inną możliwością jest wykorzystanie modułu
-.Nm pam_usbkey
+.Nm
 razem ze standardową metodą uwierzytelniania hasłem, zaimplementowaną w postaci
 modułu
-.Nm pam_unix\&.
+.Sy pam_unix.
 W tym wypadku proces logowania kończy się sukcesem jedynie w sytuacji, gdy
 obydwa moduły zakończą działanie z pozytywnym rezultatem. Narzuca to
 konieczność uzupełnienia pliku
 .Em /etc/pam.d/login
 o linie:
 .Pp
-.D1 "auth      required        pam_usbkey.so"
-.D1 "auth      required        pam_unix.so"
+.Dl "auth      required        pam_usbkey.so"
+.Dl "auth      required        pam_unix.so"
 .Sh NOTES
+Plik konfiguracyjny modułu przechowywany jest w katalogu
+.Em /etc/security/
+pod nazwą
+.Sy usbkey.conf.
+Stanowi on przyporządkowanie numerów seryjnych urządzeń USB użytkownikom
+systemu. Każda linia pliku składa się zatem z pary
+.Sy nazwa_użytkownika:numer_seryjny.
 .Sh AUTHOR
 .An Bartosz Pieńkowski Aq pienkowb@iem.pw.edu.pl
 .Sh FILES
