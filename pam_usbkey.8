@@ -1,4 +1,4 @@
-.Dd October 11, 2011
+.Dd October 12, 2011
 .Dt PAM_USBKEY 8
 .Os
 .Sh NAME
@@ -27,10 +27,10 @@ Inną możliwością jest wykorzystanie modułu
 .Nm
 razem ze standardową metodą uwierzytelniania hasłem, zaimplementowaną w postaci
 modułu
-.Sy pam_unix.
+.Xr pam_unix 8 .
 W tym wypadku proces logowania kończy się sukcesem jedynie w sytuacji, gdy
-obydwa moduły zakończą działanie z pozytywnym rezultatem. Narzuca to
-konieczność uzupełnienia pliku
+obydwa moduły zakończą działanie z pozytywnym rezultatem.
+Narzuca to konieczność uzupełnienia pliku
 .Pa /etc/pam.d/login
 o linie:
 .Pp
@@ -40,9 +40,10 @@ o linie:
 Plik konfiguracyjny modułu przechowywany jest w katalogu
 .Pa /etc/security/
 pod nazwą
-.Sy usbkey.conf.
+.Sy usbkey.conf .
 Stanowi on przyporządkowanie numerów seryjnych urządzeń USB użytkownikom
-systemu. Każda linia pliku składa się z pary
+systemu.
+Każda linia pliku składa się z pary
 .Li nazwa_użytkownika:numer_seryjny .
 .Sh AUTHORS
 .An Bartosz Pieńkowski Aq pienkowb@iem.pw.edu.pl
