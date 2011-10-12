@@ -4,9 +4,9 @@ SHLIB_NAME=	${LIB}.so.${SHLIB_MAJOR}
 SRCS=		${LIB}.c serial.c
 LDADD=		-lusb
 
-#MAN=		${LIB}.8
+MAN=		${LIB}.8
 
 LIBDIR=		${PREFIX}/lib
-#MANDIR=		${PREFIX}/man
+MANDIR=		${PREFIX}/man/pl.UTF-8/man
 
 .include <bsd.lib.mk>
