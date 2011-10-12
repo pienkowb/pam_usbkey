@@ -13,8 +13,15 @@ odczytuje i wyświetla numer seryjny przypisany do urządzenia USB o adresie
 .Ar device_address ,
 zlokalizowanego na szynie
 .Ar bus_number .
+.Pp
+Wywołanie programu kończy się niepowodzeniem w przypadku podania błędnej
+lokalizacji urządzenia, jak również z powodu braku przypisanego numeru
+seryjnego.
 .Sh EXAMPLES
 .Sh NOTES
+W celu uzyskania numeru szyny i adresu urządzenia można wykorzystać program
+.Xr usbconfig 1 .
+.Pp
 Do prawidłowego działania programu
 .Nm
 wymagane są prawa administratora systemu.
