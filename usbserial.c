@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
 	if(argc < 3 || sscanf(argv[1], "%hhu", &bus) != 1
 			|| sscanf(argv[2], "%hhu", &device) != 1)
 	{
-		puts("usage: usbserial bus device");
+		puts("usage: usbserial bus_number device_address");
 		return 1;
 	}
 
