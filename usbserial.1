@@ -18,6 +18,19 @@ Wywołanie programu kończy się niepowodzeniem w przypadku podania błędnej
 lokalizacji urządzenia, jak również z powodu braku przypisanego numeru
 seryjnego.
 .Sh EXAMPLES
+Przyczyną powstania programu
+.Nm
+była potrzeba usprawnienia procesu konfiguracji modułu
+.Xr pam_usbkey 8 .
+Przykładowo wydanie polecenia:
+.Pp
+.Dl echo `id -u -n`:`usbserial 0 1` >> /etc/security/usbkey.conf
+.Pp
+umożliwi zalogowanemu użytkownikowi uwierzytelnianie przy pomocy urządzenia
+podłączonego w momencie wydawania komendy do szyny
+.Li 0
+pod adresem
+.Li 1 .
 .Sh NOTES
 W celu uzyskania numeru szyny i adresu urządzenia można wykorzystać program
 .Xr usbconfig 1 .
