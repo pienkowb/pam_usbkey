@@ -36,6 +36,10 @@ o linie:
 .Pp
 .Dl "auth      required        pam_usbkey.so"
 .Dl "auth      required        pam_unix.so"
+.Pp
+Jeżeli moduł znajduje się w innej lokalizacji niż
+.Pa /usr/lib/
+konieczne jest podanie ścieżki absolutnej.
 .Sh NOTES
 Plik konfiguracyjny modułu przechowywany jest w katalogu
 .Pa /etc/security/
