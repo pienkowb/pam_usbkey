@@ -5,4 +5,7 @@ LDADD=		-lusb
 BINDIR=		${PREFIX}/sbin
 MANDIR=		${PREFIX}/man/pl.UTF-8/man
 
+beforeinstall:
+	mkdir -p ${MANDIR}1
+
 .include <bsd.prog.mk>
