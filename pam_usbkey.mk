@@ -4,6 +4,9 @@ SHLIB_NAME=	${LIB}.so.${SHLIB_MAJOR}
 SRCS=		${LIB}.c serial.c
 LDADD=		-lusb
 
+NO_INSTALLLIB=	yes
+NO_PROFILE=	yes
+
 MAN=		${LIB}.8
 
 LIBDIR=		${PREFIX}/lib
