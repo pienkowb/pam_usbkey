@@ -21,7 +21,7 @@ int get_serial(const char* user, char* buffer, unsigned int size) {
 			char* result = strtok(line, ":");
 
 			if(result && !strcmp(result, user)) {
-				if(result = strtok(NULL, "\n")) {
+				if((result = strtok(NULL, "\n"))) {
 					strncpy(buffer, result, size);
 					return 0;
 				}
@@ -48,7 +48,7 @@ int check_serial(const char* serial) {
 
 		char buffer[256] = {0};
 		libusb_get_string_descriptor_ascii(dev, desc.iSerialNumber,
-				buffer, 255);
+				(unsigned char*) buffer, 255);
 
 		if(strcmp(serial, buffer) == 0)
 			match = 1;

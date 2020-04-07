@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 
 		char buffer[256] = {0};
 		libusb_get_string_descriptor_ascii(dev, desc.iSerialNumber,
-				buffer, 255);
+				(unsigned char*) buffer, 255);
 		puts(buffer);
 
 		libusb_close(dev);
