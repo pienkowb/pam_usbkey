@@ -1,9 +1,13 @@
+MKOBJDIRS=auto
+
+.include <auto.obj.mk>
+
 default:
-	@${MAKE} -f pam_usbkey.mk
-	@${MAKE} -f usbserial.mk
+	@${MAKE} -C ${.CURDIR} -f pam_usbkey.mk
+	@${MAKE} -C ${.CURDIR} -f usbserial.mk
 
 .DEFAULT:
-	@${MAKE} -f pam_usbkey.mk $@
-	@${MAKE} -f usbserial.mk $@
+	@${MAKE} -C ${.CURDIR} -f pam_usbkey.mk $@
+	@${MAKE} -C ${.CURDIR} -f usbserial.mk $@
 
 .PHONY: default
