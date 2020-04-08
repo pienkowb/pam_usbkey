@@ -2,7 +2,7 @@ LIB=		pam_usbkey
 SHLIB_MAJOR=	1
 SHLIB_NAME=	${LIB}.so.${SHLIB_MAJOR}
 SRCS=		${LIB}.c serial.c
-LDADD=		-lusb
+LDADD+=		-lusb
 
 MK_INSTALLLIB=	no
 MK_PROFILE=	no
